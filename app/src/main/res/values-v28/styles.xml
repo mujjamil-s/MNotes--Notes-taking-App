@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:titleTextStyle">?attr/textAppearanceHeadline6</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="editTextBackground">@color/colorSecondaryDark</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/colorPrimary</item>
+        <item name="panelBackground">@color/colorPrimary</item>
+        <item name="android:dialogCornerRadius">4dp</item>
+    </style>
+</resources>

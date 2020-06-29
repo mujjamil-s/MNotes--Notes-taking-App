@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_ActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/AppTheme"
+        app:menu="@menu/top_action_bar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/folderSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#3BFFFFFF"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <EditText
+        android:id="@+id/input_folder_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/new_Folder_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+android:visibility="gone"
+        android:text="Button" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        >
+<androidx.appcompat.widget.AppCompatImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/background_file_rounded_rectangle"
+    android:alpha=".2"
+    android:layout_gravity="center"
+    />
+        <GridView
+            android:id="@+id/gvFolderList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:columnWidth="200dp"
+            android:gravity="center"
+            android:horizontalSpacing="20dp"
+            android:numColumns="2"
+            android:verticalSpacing="20dp"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/new_folder_float"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:contentDescription="Create New Folder"
+            android:src="@android:drawable/ic_input_add"
+            android:tint="#FFFFFF"
+            app:backgroundTint="@color/colorSecondaryDark" />
+
+    </FrameLayout>
+
+</LinearLayout>
