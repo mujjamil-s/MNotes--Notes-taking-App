@@ -47,6 +47,9 @@ public class FilesData extends AppCompatActivity {
 
     private HashMap<String,File> dataMap;
 
+    private String currentFolderName;
+    private TextView folderTitle;
+
     // Recycler View initialisation and set-up
     private RecyclerView recyclerView;
     private RecyclerViewAdapter mAdapter;
@@ -67,6 +70,10 @@ public class FilesData extends AppCompatActivity {
         String action = intent.getAction();
         String type = intent.getType();
         Bundle extras = intent.getExtras();
+        currentFolderName = extras.getString("folder_name");
+
+        folderTitle = findViewById(R.id.title_name_folder);
+        folderTitle.setText(currentFolderName);
         dataText = findViewById(R.id.dataText);
         dataList = new ArrayList<>();
 
@@ -77,7 +84,7 @@ public class FilesData extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new RecyclerViewAdapter(this.dataList,this.dataMap);
         recyclerView.setAdapter(mAdapter);
-        final String currentPath = FilesData.this.getExternalFilesDir(null).getAbsolutePath() + "/Save Text/" + extras.getString("folder_name");
+        final String currentPath = FilesData.this.getExternalFilesDir(null).getAbsolutePath() + "/Save Text/" + currentFolderName;
         newFileCreate = findViewById(R.id.new_file_create_fab);
 
         newFileCreate.setOnClickListener(new View.OnClickListener() {
