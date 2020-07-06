@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -156,9 +157,18 @@ public class FilesData extends AppCompatActivity {
 
     private void HandleSendTexts(Intent intent) {
         final String sharedtext = intent.getStringExtra(Intent.EXTRA_TEXT);
+        LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        TextView title = new TextView(this);
+        title.setText("Choose a Folder");
+        ll.addView(title,0);
+        Button b1 = new Button(this);
+        b1.setBackgroundColor(Color.YELLOW);
+        ll.addView(b1, 1);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(FilesData.this);
-        builder.setTitle("Choose a Folder");
+        //builder.setTitle("Choose a Folder");
+        builder.setCustomTitle(ll);
         rootPath = FilesData.this.getExternalFilesDir(null).getAbsolutePath() + "/" + "Save Text";
         final File dir = new File(rootPath);
         final File[] files = dir.listFiles();

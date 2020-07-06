@@ -30,7 +30,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:textSize="20sp"
-                tools:text="Hello" />
+                tools:text="Hello"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                />
         <androidx.appcompat.widget.SearchView
             android:id="@+id/filesSearch"
             android:layout_width="match_parent"
@@ -53,17 +56,20 @@
             android:id="@+id/new_file_create_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
+            android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:contentDescription="Create New File"
+            android:elevation="2dp"
             android:src="@android:drawable/ic_input_add"
-            android:tint="#FFFFFF"
-            app:backgroundTint="@color/colorSecondaryDark" />
+            android:tint="#ffffff"
+            app:elevation="6dp"
+            app:rippleColor="#001558" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="30dp" />
 
     </FrameLayout>
 
