@@ -12,9 +12,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +27,7 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,15 +96,25 @@ public class FilesData extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder newFileCreate = new AlertDialog.Builder(FilesData.this);
-                final EditText inputFileText = new EditText(FilesData.this);
-                newFileCreate.getContext().setTheme(R.style.Theme_AppCompat_Dialog_Alert);
+                View dialogPanel = getLayoutInflater().inflate(R.layout.write_new_file_panel , null);
+                final EditText inputFileText = dialogPanel.findViewById(R.id.editText3);
+                newFileCreate.getContext().setTheme(R.style.Theme_AppCompat_Dialog);
                 inputFileText.setHint("Type Here");
                 inputFileText.setTextColor(Color.WHITE);
+                inputFileText.setHintTextColor(Color.WHITE);
 
-                newFileCreate.setTitle("Create New File");
-                newFileCreate.setView(inputFileText);
+               // newFileCreate.setTitle("Create New File");
+               // newFileCreate.setView(inputFileText);
+          //  dialogPanel = getResources().getLayout(R.layout.write_new_file_panel);
 
-                newFileCreate.setPositiveButton("New File", new DialogInterface.OnClickListener() {
+                   newFileCreate.setView(dialogPanel);
+
+               Button saveButton =  dialogPanel.findViewById(R.id.Save);
+
+               Button closeButton =  dialogPanel.findViewById(R.id.Close);
+
+
+              /*  newFileCreate.setPositiveButton("New File", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(inputFileText.length() != 0){
@@ -119,14 +133,40 @@ public class FilesData extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
-                });
-                AlertDialog dialog = newFileCreate.create();
+                });*/
+                final AlertDialog dialog = newFileCreate.create();
                 dialog.show();
-                Button positive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                inputFileText.requestFocus();
+
+                saveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(inputFileText.length() != 0){
+                            WriteFile(inputFileText.getText().toString(),currentPath);
+                            dialog.dismiss();
+                        }
+                        else {
+                            Toast.makeText(FilesData.this, "File Cannot be Empty", Toast.LENGTH_LONG).show();
+                        }
+                        //CreateFolder(inputFile.getText().toString(), folder);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+                closeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+              DisplayMetrics screenSize =  getResources().getDisplayMetrics();
+
+                dialog.getWindow().setLayout(screenSize.widthPixels,screenSize.heightPixels-getSupportActionBar().getHeight()*5);
+
+                /*Button positive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
                 Button negative = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
                 positive.setTextColor(Color.WHITE);
                 negative.setTextColor(Color.WHITE);
-            }
+            */}
         });
 
         filesSearchView = findViewById(R.id.filesSearch);
@@ -158,13 +198,17 @@ public class FilesData extends AppCompatActivity {
     private void HandleSendTexts(Intent intent) {
         final String sharedtext = intent.getStringExtra(Intent.EXTRA_TEXT);
         LinearLayout ll = new LinearLayout(this);
-        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.setOrientation(LinearLayout.HORIZONTAL);
         TextView title = new TextView(this);
         title.setText("Choose a Folder");
         ll.addView(title,0);
         Button b1 = new Button(this);
         b1.setBackgroundColor(Color.YELLOW);
-        ll.addView(b1, 1);
+        ll.addView(b1, 1 );
+        LayoutParams b1Params = (LinearLayout.LayoutParams) b1.getLayoutParams();
+        b1Params.weight = 0.3f;
+        b1.setLayoutParams(b1Params);
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(FilesData.this);
         //builder.setTitle("Choose a Folder");
@@ -181,9 +225,7 @@ public class FilesData extends AppCompatActivity {
                     //  dataText.setText(ReadFile());
 
             }
-
-
-        });
+           });
         AlertDialog dialog = builder.create();
         dialog.show();
 
@@ -223,10 +265,16 @@ public class FilesData extends AppCompatActivity {
                    }
                });
            }
-           String lastName = fileNames.get(fileNames.size() - 1);
+
+           int lastName;
+           if(files.length != 0){
+               lastName =Integer.valueOf(fileNames.get(fileNames.size() - 1));
+           } else{
+               lastName =  0;
+           }
 
 
-           int count = Integer.valueOf(lastName);
+           int count = lastName;
 
            try {
                File txtFile = new File(file, String.valueOf(count + 1));
@@ -292,9 +340,6 @@ public class FilesData extends AppCompatActivity {
                 mAdapter.getFilter().filter(newText);
                 return false;
             }
-
         });
-
-
     }
 }

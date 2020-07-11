@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -263,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                     AlertDialog dialog = newFolderCreate.create();
                     dialog.show();
+                    inputFolderName.requestFocus();
                     Button positive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
                     Button negative = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
                     positive.setTextColor(Color.WHITE);
@@ -411,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
                         ArrayList<Folder> filterResultData = new ArrayList<>();
 
                         for (Folder data : folderList) {
-                            if (data.getFolderName().contains(constraint)) {
+                            if (data.getFolderName().toLowerCase().contains(constraint.toString().toLowerCase())) {
                                 filterResultData.add(data);
                             }
                         }

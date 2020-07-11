@@ -100,8 +100,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     ArrayList<String> filterResultData = new ArrayList<>();
 
                     for (String data: dataMap.keySet()){
-
-                        if(data.contains(constraint)){
+                        if(data.toLowerCase().contains(constraint.toString().toLowerCase())){
                             filterResultData.add(data);
                         }
                     }
