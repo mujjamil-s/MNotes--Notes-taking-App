@@ -13,44 +13,65 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-
         android:theme="@style/AppTheme"
         app:menu="@menu/top_action_bar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-        app:title="Folder Name">
+        app:contentInsetStart="0dp"
+        >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
+
+
+            <ImageButton
+                android:id="@+id/back_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:src="@drawable/ic_back_black"
+
+                />
 
             <TextView
                 android:id="@+id/title_name_folder"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_alignBaseline="@id/back_button"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/back_button"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="italic|bold"
+                tools:text="HELLO" />
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/filesSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:textSize="20sp"
-                tools:text="Hello"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                />
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/filesSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#3BFFFFFF"
-            android:orientation="vertical"
-
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="5dp"/>
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_below="@id/back_button"
+                android:background="#3BFFFFFF"
+                android:orientation="vertical" />
 
 
-        </LinearLayout>
+        </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#80C2DFF2">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/new_file_create_fab"
@@ -60,7 +81,7 @@
             android:layout_margin="16dp"
             android:contentDescription="Create New File"
             android:elevation="2dp"
-            android:src="@android:drawable/ic_input_add"
+            android:src="@drawable/ic_create_black_48dp"
             android:tint="#ffffff"
             app:elevation="6dp"
             app:rippleColor="#001558" />
@@ -69,8 +90,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="30dp" />
-
+            android:layout_marginBottom="20dp" />
     </FrameLayout>
 
 </LinearLayout>

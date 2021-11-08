@@ -7,27 +7,39 @@
     android:layout_height="wrap_content"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="6dp"
     android:layout_marginTop="16dp"
     android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp" >
+    android:layout_marginRight="16dp"
+    app:cardPreventCornerOverlap="false"
+
+    >
 
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_text_shape"
+   >
 
     <Button
         android:id="@+id/fCMenuButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignRight="@id/dataText"
-        android:src="@color/contextualDark" />
+        android:background="@drawable/ic_more_vert_black_48dp"
+        android:visibility="gone"/>
+    <androidx.appcompat.widget.ActionMenuView
+        android:id="@+id/card_Action_View"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        />
 
     <TextView
         android:id="@+id/dataText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/fCMenuButton"
+        android:layout_below="@id/card_Action_View"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
@@ -35,7 +47,8 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:typeface="normal"
-        tools:text="Text Here" />
+        tools:text="Text Here"
+        android:textColor="#000000"/>
 
 </RelativeLayout>
 </androidx.cardview.widget.CardView>

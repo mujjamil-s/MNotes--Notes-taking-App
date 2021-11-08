@@ -1,8 +1,18 @@
 package com.example.textsaver;
 
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentSender;
+import android.content.res.Resources;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +21,11 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuPopupHelper;
+import androidx.appcompat.widget.ActionMenuView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,12 +40,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ArrayList<String> mDataset;
     private ArrayList<String> filteredData;
-
+private Context mContext;
     private HashMap<String, File> dataMap;
 
 
 
-    public RecyclerViewAdapter( ArrayList<String> myDataset, HashMap<String,File> myDataMap) {
+    public RecyclerViewAdapter( ArrayList<String> myDataset, HashMap<String,File> myDataMap, Context context) {
+        mContext = context;
         mDataset = myDataset;
         filteredData = myDataset;
         this.dataMap = myDataMap;
@@ -44,37 +58,76 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      View fileView =  LayoutInflater.from(parent.getContext()).inflate(R.layout.files_list,parent, false);
      TextView dataText =  fileView.findViewById(R.id.dataText);
       Button fileMenuButton = fileView.findViewById(R.id.fCMenuButton);
+      ActionMenuView cardActionMenu = fileView.findViewById(R.id.card_Action_View);
 
-     MyViewHolder viewHolder = new MyViewHolder(fileView,dataText,fileMenuButton);
+     MyViewHolder viewHolder = new MyViewHolder(fileView,dataText,fileMenuButton,cardActionMenu);
      return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         holder.dataText.setText(filteredData.get(position));
-        holder.fCMenuButton.setOnClickListener(new View.OnClickListener() {
+        holder.cardActionView.getMenu().clear();
+        ((FilesData)mContext).getMenuInflater().inflate(R.menu.menu, holder.cardActionView.getMenu());
+        holder.cardActionView.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
             @Override
-            public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
-                popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
-                popupMenu.show();
-
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        switch (item.getItemId()){
-                            case R.id.cardDelete:
-                                File fileToBeDeleted = dataMap.get(filteredData.get(position));
+            public boolean onMenuItemClick(MenuItem item) {
+               final File fileToBeDeleted = dataMap.get(filteredData.get(position));
+                String filesString = filteredData.get(position);
+                switch (item.getItemId()){
+                    case R.id.cardDelete:
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+                        alertDialog.setTitle("Delete");
+                        alertDialog.setMessage("Are You Sure?");
+                        alertDialog.getContext().setTheme(R.style.DeleteDialog);
+                        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
                                 boolean result =   fileToBeDeleted.delete();
                                 Log.d("deleteResult", "onMenuItemClick:  " + result);
+                                if(result){
                                 filteredData.remove(position);
                                 notifyItemRemoved(position);
                                 notifyItemRangeChanged(position, 1);
+                                }
+                            }
+                        });
+
+                        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        final AlertDialog dialog = alertDialog.create();
+                        dialog.show();
+                        break;
+                    case R.id.cardShare:
+                        TextView appTag = new  TextView(mContext);
+                        appTag.setText("via MNotes (www.Google.com)");
+                        Linkify.addLinks(appTag, Linkify.WEB_URLS);
+                        Intent shareCard = new Intent(Intent.ACTION_SEND);
+                        shareCard.putExtra(Intent.EXTRA_TEXT, filesString + "\n"+appTag.getText() );
+                        shareCard.setType("text/plain");
+
+                        Intent sendIntent = Intent.createChooser(shareCard, null);
+                        (mContext).startActivity(sendIntent);
+                        break;
+                    case R.id.cardCopy:
+                        ClipboardManager clipboardManager=(ClipboardManager)mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                        try {
+                            ClipData clip = ClipData.newPlainText("Copy", filesString);
+                            if (clipboardManager != null) {
+                                clipboardManager.setPrimaryClip(clip);
+
+                                Toast.makeText(mContext, "Text Copied", Toast.LENGTH_SHORT).show();
+                            }
+                        }  catch(Exception e){
+                            e.printStackTrace();
                         }
-                        return true;
-                    }
-                });
+                        break;
+                }
+                return false;
             }
         });
     }
@@ -121,12 +174,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         public CardView fileCard;
         public TextView dataText;
-        private Button fCMenuButton;
-        public MyViewHolder (@NonNull View itemView, TextView dataText, Button fCMenuButton) {
+        public Button fCMenuButton;
+        public ActionMenuView cardActionView;
+        public MyViewHolder (@NonNull View itemView, TextView dataText, Button fCMenuButton, ActionMenuView cardActionView) {
             super(itemView);
             this.fileCard = (CardView) itemView;
             this.dataText = dataText;
             this.fCMenuButton = fCMenuButton;
+            this.cardActionView = cardActionView;
 
         }
     }

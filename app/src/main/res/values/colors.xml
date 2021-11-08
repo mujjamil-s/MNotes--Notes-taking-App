@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#0080bb</color>
     <color name="colorAccent">#0080bb</color>
     <color name="colorSecondary">#B5FEE0D5</color>
-    <color name="colorSecondaryDark">#ccafa5</color>
+    <color name="colorSecondaryDark">#CC7E929E</color>
     <color name="contextualLite">#011A24</color>
     <color name="contextualDark">#00111A</color>
+    <color name="black">#000000</color>
 </resources>

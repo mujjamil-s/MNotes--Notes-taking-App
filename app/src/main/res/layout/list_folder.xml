@@ -6,11 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:layout_gravity="center"
-    app:cardBackgroundColor="#66FFFFFF"
     app:cardCornerRadius="6dp"
-    app:cardUseCompatPadding="true"
-    app:cardElevation="4dp"
+    app:cardElevation="2dp"
     android:layout_margin="4dp"
+    app:cardBackgroundColor="#80D9EDFA"
     >
 
     <RelativeLayout

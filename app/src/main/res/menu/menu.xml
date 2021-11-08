@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/cardDelete"
-     android:title="Delete"
-     app:showAsAction="never" ></item>
+    <item
+        android:id="@+id/cardCopy"
+        android:icon="@drawable/ic_content_copy_black_48dp"
+        android:title="Copy"
+        app:showAsAction="always"></item>
+    <item
+        android:id="@+id/cardShare"
+        android:icon="@drawable/ic_share_black_48dp"
+        android:title="Share"
+        app:showAsAction="always"></item>
+    <item
+        android:id="@+id/cardDelete"
+        android:icon="@drawable/ic_delete_black_48dp"
+        android:title="Delete"
+        app:showAsAction="always"></item>
 </menu>

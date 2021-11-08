@@ -391,6 +391,7 @@ public class MainActivity extends AppCompatActivity {
             TextView folderName = folderView.findViewById(R.id.folderName);
             Folder folder = (Folder) filteredData.get(position);
             folderName.setText(folder.getFolderName());
+            folderName.setTextColor(Color.BLACK);
 
             if (mSelection.get(position) != null) {
                 folderView.setBackgroundColor(getResources().getColor(R.color.colorSecondaryDark));

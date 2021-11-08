@@ -7,6 +7,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -26,6 +29,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -61,6 +65,7 @@ public class FilesData extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
 
     private SearchView filesSearchView;
+    private ImageButton backButton;
     private FloatingActionButton newFileCreate;
 
     @Override
@@ -71,11 +76,21 @@ public class FilesData extends AppCompatActivity {
         Toolbar fileToolBar = findViewById(R.id.files_ActionBar);
         setSupportActionBar(fileToolBar);
 
+
+
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
         Bundle extras = intent.getExtras();
         currentFolderName = extras.getString("folder_name");
+        backButton = findViewById(R.id.back_button);
+
+       backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         folderTitle = findViewById(R.id.title_name_folder);
         folderTitle.setText(currentFolderName);
@@ -87,7 +102,7 @@ public class FilesData extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new RecyclerViewAdapter(this.dataList,this.dataMap);
+        mAdapter = new RecyclerViewAdapter(this.dataList,this.dataMap,this);
         recyclerView.setAdapter(mAdapter);
         final String currentPath = FilesData.this.getExternalFilesDir(null).getAbsolutePath() + "/Save Text/" + currentFolderName;
         newFileCreate = findViewById(R.id.new_file_create_fab);
@@ -342,4 +357,5 @@ public class FilesData extends AppCompatActivity {
             }
         });
     }
+
 }
